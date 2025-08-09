@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  [data-theme='sunset-hug'] {
+    --background: 20 50% 98%; /* Off-White */
+    --foreground: 240 10% 20%; /* Deep Navy */
+    --card: 20 50% 96%;
+    --card-foreground: 240 10% 20%;
+    --popover: 20 50% 96%;
+    --popover-foreground: 240 10% 20%;
+    --primary: 350 80% 60%; /* Soft Rose Pink */
+    --primary-foreground: 240 10% 20%;
+    --secondary: 30 80% 70%; /* Warm Peach */
+    --secondary-foreground: 240 10% 20%;
+    --muted: 20 50% 94%;
+    --muted-foreground: 240 10% 40%;
+    --accent: 350 80% 60%;
+    --accent-foreground: 240 10% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 80% 85%;
+    --input: 30 80% 85%;
+    --ring: 350 80% 60%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 35 91% 65%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 21% 51%;
+    --accent: 35 91% 65%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 35 91% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: linear-gradient(
+      to top right,
+      hsl(var(--background)),
+      hsl(var(--secondary))
+    );
+  }
+  .dark body {
+    background-image: linear-gradient(
+      to top right,
+      hsl(var(--background)),
+      hsl(220 40% 15%)
+    );
+  }
+}
+
+@layer components {
+  .notepad {
+    @apply relative bg-white;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 97%,
+      hsl(var(--primary) / 0.3) 98%
+    );
+    background-size: 100% 2.25rem; /* Matches the line-height of the text */
+  }
+  .notepad::before {
+    content: '';
+    @apply absolute top-0 left-12 w-px h-full bg-red-400;
+  }
+
+  .envelope {
+    perspective: 1000px;
+  }
+  .envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    cursor: pointer;
+  }
+  .envelope-wrapper.open {
+    transform: rotateY(180deg);
+  }
+  .envelope-flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: hsl(var(--secondary));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 50% 70%, 0% 40%);
+    transform-origin: top;
+    transition: transform 1s ease-in-out;
+    transform: rotateX(0deg);
+    z-index: 3;
+    backface-visibility: hidden;
+  }
+  .envelope-wrapper.open .envelope-flap {
+    transform: rotateX(180deg);
+    transition-delay: 0s;
+  }
+  .envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: hsl(var(--primary) / 0.8);
+    border-radius: 0.5rem;
+    z-index: 1;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+  }
+  .envelope-card {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    background-color: white;
+    top: 2.5%;
+    left: 2.5%;
+    border-radius: 0.25rem;
+    transition: transform 1s ease-in-out, opacity 0.5s;
+    transform: translateY(0) rotateX(0);
+    z-index: 2;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    backface-visibility: hidden;
+  }
+  .envelope-wrapper.open .envelope-card {
+    transform: translateY(-120px) rotateX(0) rotateZ(-5deg);
+    opacity: 0;
+    transition-delay: 0.5s;
+  }
+}
